@@ -2,19 +2,31 @@
 import Input from '@/app/components/Input/Input';
 import { NextPage } from 'next'
 import { signIn } from 'next-auth/react';
-import React, { createRef } from 'react'
+import React, { createRef, useState } from 'react'
 
 const Login: NextPage = () => {
     const emailRef = createRef<HTMLInputElement>();
     const passwordRef = createRef<HTMLInputElement>();
   
-    const handleSubmit = (event: React.FormEvent) => {
+    const [error, setError] = useState<string>("");
+
+    const handleSubmit = async (event: React.FormEvent) => {
       event.preventDefault();
-      signIn("credentials", {
-        email: emailRef.current?.value,
-        password: passwordRef.current?.value,
-        redirect: false
-      });
+      try {
+        const res = await signIn("credentials", {
+          email: emailRef.current?.value,
+          password: passwordRef.current?.value,
+          redirect: false
+        });
+        if (res?.error) {
+          setError("Credenciais inválidas");
+          console.log(res.error);
+          
+        }
+        console.log(res?.status);
+      } catch (error) {
+        setError("Algo deu errado");
+      }
     }
   
     return (
@@ -24,6 +36,13 @@ const Login: NextPage = () => {
               <Input label='Email' input={{ id: "email", type: "text" }} ref={emailRef} />
               <Input label='Senha' input={{ id: "password", type: "text" }} ref={passwordRef} />
               <button>Login</button>
+              {
+              error 
+              ?
+                <span>{error}</span>
+              :
+                <span></span>
+            }
           </div>
         </form>
       </main>
