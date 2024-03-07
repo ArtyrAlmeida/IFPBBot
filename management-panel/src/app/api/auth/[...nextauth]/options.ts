@@ -10,19 +10,19 @@ import CredentialsProvider from "next-auth/providers/credentials";
 const login = async (user: ILoginInfo) => {
     await connectDb();
 
-        const dbUser = await User.findOne({ email: user.email });
-    
-        if (!dbUser) throw new Error("Não existe um usuário cadastrado com esse email");
-    
-        const match = await bcrypt.compare(user.password, dbUser.password);
-    
-        if(match) {
-            const { email, name, _id } = dbUser as IUser;
-            const id = _id!.toString();
-            return { name, email, id }
-        }
-    
-        throw new Error("Senha incorreta");
+    const dbUser = await User.findOne({ email: user.email });
+
+    if (!dbUser) throw new Error("Não existe um usuário cadastrado com esse email");
+
+    const match = await bcrypt.compare(user.password, dbUser.password);
+
+    if(match) {
+        const { email, name, _id } = dbUser as IUser;
+        const id = _id!.toString();
+        return { name, email, id }
+    }
+
+    throw new Error("Senha incorreta");
 }
 
 
@@ -56,13 +56,15 @@ const options: AuthOptions = {
             if (user) {
                 token.name = user.name;
                 token.email = user.email;
+                token.id = user.id;
             }
             return token;
         },
         async session({ session, token }) {
             if (token) {
-                session.user!.name = token.name;
-                session.user!.email = token.email;
+                session.user.name = token.name as string;
+                session.user.email = token.email as string;
+                session.user.id = token.id as string;
             }
             return session;
         }
