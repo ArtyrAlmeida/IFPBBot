@@ -5,7 +5,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { userAlreadyExists, userHasAllProperties } from "@/validators/userValiidator";
 import User from "@/models/User";
 import connectDb from "@/libs/database";
-import signToken from "@/utils/signToken";
 
 
 const POST = async (req: NextRequest) => {

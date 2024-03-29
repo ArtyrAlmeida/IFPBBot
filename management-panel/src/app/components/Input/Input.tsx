@@ -2,7 +2,7 @@
 import React, { ForwardedRef } from 'react'
 
 interface InputProps {
-    input: { id: string, type: 'text' | 'password' },
+    input: { id: string, type: 'text' | 'password',  defaultValue?: string },
     label: string,
 }
 
