@@ -1,4 +1,4 @@
 export interface IMessagingService {
-    extractMessageData: (message: any) => { query: string, to: string };
-    sendMessage: (message: string, receiver: string) => void;
+    extractMessageData: (message: any) => { message: string, to: string };
+    sendMessage: (messages: any[], receiver: string) => void;
 }

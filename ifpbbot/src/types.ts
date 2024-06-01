@@ -1,4 +1,16 @@
-type UserMessage = {
+export type User = {
+    phoneNumber: string;
+    name: string;
+}
+
+export type Message = {
+    phoneNumber: string;
+    userQuery: string;
+    intent: string;
+
+}
+
+export type UserIncomingMessage = {
     contacts: [{
         profile: { name: string },
         wa_id: string,
@@ -38,4 +50,25 @@ type InteractiveMessageFieldsReply = {
     id: string;
     title: string
     description: string;
+}
+
+export type ProtobufField = {
+    kind: "structValue",
+    structValue: {
+        fields: { [key: string]: ProtobufField }
+    },
+} | {
+    kind: "stringValue",
+    stringValue: string,
+} | {
+    kind: "numberValue",
+    numberValue: number,
+} | {
+    kind: "listValue",
+    listValue: {
+        values: { fields: { [key: string]: ProtobufField } }[]
+    }
+} | {
+    kind: "boolValue",
+    boolValue: boolean
 }
