@@ -40,7 +40,7 @@ const CreateEditModal = ({ action, id, answerInfo, handleClose }: CreateEditProp
         }
     }
 
-    return <div style={{ backgroundColor: "white", position: "absolute", top: "50%", left: "50%", color: "black", display: "flex", alignItems: "center", flexDirection: "column" }}>
+    return <div>
         <h2>{actionMap.title}</h2>
         <form>
             <Input label={"Nome"} ref={nameRef} input={{ id: "name", type: "text", defaultValue: answerInfo.name }} />
