@@ -6,6 +6,7 @@ declare global {
         DF_PROJECT_ID: string;
         DF_CLIENT_EMAIL: string;
         DF_PRIVATE_KEY: string;
+        MONGODB_URI: string;
       }
     }
   }
