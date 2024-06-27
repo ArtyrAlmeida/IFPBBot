@@ -1,3 +1,5 @@
+export type ActionName = "renderAnswerList" | "renderAnswer";
+
 export type User = {
     phoneNumber: string;
     name: string;
@@ -52,6 +54,44 @@ type InteractiveMessageFieldsReply = {
     description: string;
 }
 
+export type BotOutgoingMessage = {
+    to: string;
+} & BotMessageFiels;
+
+type BotMessageFiels = TextMessageFields | BotOutgoingListMessageFields | BotOutgoingImageMessageFields;
+
+type BotOutgoingListMessageFields = {
+    type: "interactive",
+    interactive: {
+        header: {
+            type: "text",
+            text: string,
+        },
+        action: {
+            sections: { 
+                title: string,
+                rows: InteractiveMessageFieldsReply[]
+            }[];
+            button: string;
+        },
+        type: "list",
+        body: {
+            text: string;
+        },
+        footer?: {
+            text: string;
+        }
+    }
+}
+
+type BotOutgoingImageMessageFields = {
+    type: "image";
+    image: {
+        link: string;
+        caption: string;
+    }
+}
+
 export type ProtobufField = {
     kind: "structValue",
     structValue: {
@@ -66,9 +106,17 @@ export type ProtobufField = {
 } | {
     kind: "listValue",
     listValue: {
-        values: { fields: { [key: string]: ProtobufField } }[]
+        values: ProtobufField[]
     }
 } | {
     kind: "boolValue",
     boolValue: boolean
 }
+
+export interface IChartAnswer {
+    name: string;
+    data: Buffer;
+    contentType: string;
+    _id?: string;
+}
+

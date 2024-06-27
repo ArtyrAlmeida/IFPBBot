@@ -1,5 +1,6 @@
-import { IChartAnswer } from "@/interfaces";
+
 import mongoose, { Schema } from "mongoose";
+import { IChartAnswer } from "../types";
 
 const chartAnswerSchema = new Schema<IChartAnswer>({
     name: {
@@ -13,6 +14,6 @@ const chartAnswerSchema = new Schema<IChartAnswer>({
     }
 });
 
-const ChartAnswer = mongoose.models?.chart_answers || mongoose.model("chart_answers", chartAnswerSchema);
+const ChartAnswer = mongoose.model("chart_answers", chartAnswerSchema);
 
 export default ChartAnswer;

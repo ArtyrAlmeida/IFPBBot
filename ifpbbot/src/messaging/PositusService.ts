@@ -1,4 +1,4 @@
-import { UserIncomingMessage } from "../../types";
+import { UserIncomingMessage } from "../types";
 import { IMessagingService } from "./IMessagingService";
 
 class PositusService implements IMessagingService {
@@ -18,6 +18,8 @@ class PositusService implements IMessagingService {
 
         messagesToSend.forEach(await (async message => {
             const result = await this.positusRequest(message);
+            console.log(await result.json());
+            
             return result;
         }))
     }

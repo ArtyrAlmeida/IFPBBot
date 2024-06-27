@@ -2,7 +2,7 @@
 import React, { createRef, useState } from 'react';
 import { NextPage } from 'next';
 
-import Input from '@/app/components/Input/Input';
+import Input from '@/app/components/Input/TextInput';
 import { useRouter } from 'next/navigation';
 
 const SignUp: NextPage = () => {

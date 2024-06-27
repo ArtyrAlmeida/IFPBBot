@@ -1,16 +1,16 @@
 "use client"
 import { useState } from "react";
-import CreateTextAnswerEditModal from "../CreateEditAnswerModal";
+import CreateEditAnswerModal from "../CreateEditAnswerModal";
 
 interface ITextAnswerProps {
     name: string;
-    text: string;
     id: string;
     key: string;
 }
 
-const TextAnswer = (props: ITextAnswerProps) => {
+const ChartAnswer = (props: ITextAnswerProps) => {
     const [isEditModalActive, setIsEditModalActive] = useState<boolean>(false);
+    const url = `http://localhost:3030/image?id=${props.id}`
 
     const onEditClick = () => {
         if (isEditModalActive) setIsEditModalActive(false);
@@ -18,7 +18,7 @@ const TextAnswer = (props: ITextAnswerProps) => {
     }
 
     const onDeleteClick = async () => {
-        const response = await fetch(`http://localhost:3000/api/textAnswer?id=${props.id}`, {
+        const response = await fetch(`http://localhost:3000/api/chartAnswer?id=${props.id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json"
@@ -37,9 +37,9 @@ const TextAnswer = (props: ITextAnswerProps) => {
                 <button onClick={() => onEditClick()}>Editar</button>
                 <button onClick={() => onDeleteClick()}>Deletar</button>
             </div>
-            { isEditModalActive ? <CreateTextAnswerEditModal action="edit" id={props.id} handleClose={onEditClick} answerInfo={{ name: props.name, text: props.text, answerType: "text" }} /> : <></> }
+            { isEditModalActive ? <CreateEditAnswerModal action="edit" id={props.id} handleClose={onEditClick} answerInfo={{ name: props.name, image: url, answerType: "flowchart" }} /> : <></> }
         </>
     )
 }
 
-export default TextAnswer;
+export default ChartAnswer;

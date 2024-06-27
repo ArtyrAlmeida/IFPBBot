@@ -18,6 +18,7 @@ export interface ITextAnswer {
 
 export interface IChartAnswer {
     name: string;
-    chart: Blob;
+    data: Buffer;
+    contentType: string;
     _id?: string;
 }
