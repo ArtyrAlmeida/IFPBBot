@@ -1,19 +1,19 @@
 "use client"
-import { ITextAnswer } from '@/interfaces';
+import { IChartAnswer } from '@/interfaces';
 import { NextPage } from 'next';
-import TextAnswer from '../components/Answers/TextAnswer/TextAnswer';
 import { useEffect, useState } from 'react';
-import CreateEditTextAnswerModal from '../components/Answers/CreateEditAnswerModal';
+import CreateEditAnswerModal from '../components/Answers/CreateEditAnswerModal';
+import ChartAnswer from '../components/Answers/ChartAnswer/ChartAnswer';
 
 const TextAnswers: NextPage = () => {
-    const [textAnswers, setTextAnswers] = useState<ITextAnswer[]>([]);
+    const [textAnswers, setTextAnswers] = useState<IChartAnswer[]>([]);
     const [error, setError] = useState<boolean>(false);
     const [isCreateModalActive, setIsCreateModalActive] = useState<boolean>(false);
 
     const fetchTextAnswers = async () => {
-        const response = await fetch("http://localhost:3000/api/textAnswer");
+        const response = await fetch("http://localhost:3000/api/chartAnswer");
         if (response.ok) {
-            const body: ITextAnswer[] = await response.json();
+            const body: IChartAnswer[] = await response.json();
             return setTextAnswers(body)
         }
         setError(true)
@@ -33,9 +33,9 @@ const TextAnswers: NextPage = () => {
             <h1>Respostas Textuais</h1>
             <button onClick={onCreateClick}>Criar</button>
             <div>
-                {textAnswers.map(e => <TextAnswer key={e._id!} id={e._id!} name={e.name} text={e.text} />)}
+                {textAnswers.map(e => <ChartAnswer key={e._id!} id={e._id!} name={e.name} />)}
             </div>
-            { isCreateModalActive ? <CreateEditTextAnswerModal action="create" handleClose={onCreateClick} answerInfo={{ name: "", text: "" }} /> : <></> }
+            { isCreateModalActive ? <CreateEditAnswerModal action="create" handleClose={onCreateClick} answerInfo={{ name: "", image: "", answerType: "flowchart" }} /> : <></> }
         </main> 
     )
 }

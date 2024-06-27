@@ -4,6 +4,8 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDb from "@/libs/database";
 import ChartAnswer from "@/models/ChartAnswer";
 
+const MEGABYTE_SIZE = 1024 * 1024;
+
 const GET = async (req: NextRequest) => {
     try {
         await connectDb();
@@ -21,13 +23,26 @@ const GET = async (req: NextRequest) => {
 const POST = async (req: NextRequest) => {
     try {
         await connectDb();
-        const chartAnswer: IChartAnswer = await req.json();
-
-        const createdAnswer = await ChartAnswer.create(chartAnswer);
+        const chartAnswer: FormData = await req.formData();
+        const name =  await chartAnswer.get("name")
+        const file: File | null = chartAnswer.get("data") as unknown as File;
+        
+        if (!file) return NextResponse.json({ message: "É necessário anexar uma imagem" }, { status: 400 });
+        const contentType = file.type
+        console.log(file.size)
+        if (file.size >= (16 * MEGABYTE_SIZE)) return NextResponse.json({ message: "Imagem excede o limite de 16 megas" }, { status: 400 });
+        if (!file.type.includes("image/"))     return NextResponse.json({ message: "O arquivo deve ser uma imagem" }, { status: 400 });
+        
+        const bytes = await file.arrayBuffer();
+        const buffer = Buffer.from(bytes);
+        
+        const createdAnswer = await ChartAnswer.create({ name, data: buffer, contentType });
         
         return NextResponse.json({ data: createdAnswer }, { status: 201 });
     } catch (error) {
-        return NextResponse.json({ message: "Não foi possível realizar a criação" }, { status: 400 });
+        console.log(error);
+        
+        return NextResponse.json({ message: "Não foi possível realizar a criação" }, { status: 500 });
         
     }
 }

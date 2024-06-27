@@ -1,8 +1,8 @@
 "use client"
-import Input from '@/app/components/Input/Input';
+import Input from '@/app/components/Input/TextInput';
 import { NextPage } from 'next'
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation'
 import React, { createRef, useState } from 'react'
 
 const Login: NextPage = () => {

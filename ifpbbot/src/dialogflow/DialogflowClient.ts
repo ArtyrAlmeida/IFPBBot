@@ -1,11 +1,14 @@
 import dotenv from "dotenv";
 dotenv.config();
 import dialogflow, { SessionsClient } from "@google-cloud/dialogflow";
-import { ProtobufField } from "../../types";
+import { ActionName, ProtobufField } from "../types";
 
 import { google } from "@google-cloud/dialogflow/build/protos/protos";
+import { RenderAnswerList } from "./actions/RenderAnswerList";
+import { DialogflowAction } from "./DialogflowAction";
+import { RenderAnswer } from "./actions/RenderAnswer";
 
-class DialogflowService {
+class DialogflowClient {
     private sessionClient: SessionsClient;
 
     constructor() {
@@ -41,14 +44,30 @@ class DialogflowService {
             return {};
         });
         
-        if (queryResult.action) queryResult = this.executeAction(queryResult);
+        queryResult = await this.executeAction(queryResult, message);
         
         return queryResult;
     }
 
-    private executeAction = (queryResult: google.cloud.dialogflow.v2.IQueryResult) => {
-        const type = queryResult.parameters;
-        return queryResult;
+    private executeAction = async (queryResult: google.cloud.dialogflow.v2.IQueryResult, query: string) => {
+        if (!queryResult.action) return queryResult;
+        const action = queryResult.action as ActionName;
+        const strategy = this.getActionStrategy(action);
+
+        if (!strategy) return queryResult;
+        const actionClient = new DialogflowAction(strategy, this);
+        return await actionClient.executeAction(queryResult, query);
+    }
+
+    private getActionStrategy = (action: ActionName) => {
+        switch (action) {
+            case "renderAnswerList":
+                return new RenderAnswerList();
+            case "renderAnswer":
+                return new RenderAnswer();
+            default:
+                return null;
+        }
     }
 
     private getSessionPath = (session: string) => {
@@ -73,7 +92,7 @@ class DialogflowService {
                     object[field] = value.boolValue;
                     break;
                 case "listValue":
-                    object[field] = value.listValue.values.map(value => this.decodeProtobuff(value));
+                    object[field] = value.listValue.values.map((value: any) => this.decodeProtobuff({ fields: { value } }).value );
                     break;
                 case "structValue":
                     object[field] = this.decodeProtobuff(value.structValue);
@@ -84,4 +103,4 @@ class DialogflowService {
     }
 }
 
-export { DialogflowService }
+export { DialogflowClient }
