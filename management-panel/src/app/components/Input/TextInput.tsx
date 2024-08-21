@@ -1,5 +1,6 @@
 "use client"
 import React from 'react'
+import styles from "./Input.module.css"
 
 interface InputProps {
     input: { id: string, type: 'text' | 'password',  defaultValue?: string },
@@ -9,9 +10,9 @@ interface InputProps {
 const TextInput = React.forwardRef<HTMLInputElement, InputProps>(function Input(props, ref) {
 
     return (
-      <div className='form-input'>
-        <label className="form-label" htmlFor={props.input.id}>{props.label}</label>
-        <input className="form-control"
+      <div className={styles.inputBox}>
+        <label className={styles.label} htmlFor={props.input.id}>{props.label}</label>
+        <input className={styles.input}
           {...props.input}
           ref={ref}
         />

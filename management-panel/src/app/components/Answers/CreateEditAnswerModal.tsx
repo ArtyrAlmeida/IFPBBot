@@ -4,12 +4,14 @@ import { useRouter } from "next/navigation";
 import Input from "../Input/TextInput";
 import ImageInput from "../Input/ImageInput";
 
+import styles from "./CreateEditModal.module.css";
+
 interface CreateEditProps {
     action: "edit" | "create";
     id?: string;
     answerInfo: { name: string, answerType: "text", text: string } | { name: string, answerType: "flowchart", image: string };
     handleClose: () => void;
-}
+} 
 
 const CreateEditTextAnswerModal = ({ action, id, answerInfo, handleClose }: CreateEditProps) => {
     const router = useRouter();
@@ -17,11 +19,6 @@ const CreateEditTextAnswerModal = ({ action, id, answerInfo, handleClose }: Crea
     const inputRef = createRef<HTMLInputElement>();
 
     const [image, setImage] = useState<File>()
-
-    useEffect(() => {
-        console.log(image);
-        
-    }, [image])
 
     const handleImageChange = (imageFile: File) => {
         setImage(imageFile)
@@ -52,19 +49,24 @@ const CreateEditTextAnswerModal = ({ action, id, answerInfo, handleClose }: Crea
         }
     }
 
-    return <div>
-        <h2>{actionMap.title}</h2>
-        <form>
-            <Input label={"Nome"} ref={nameRef} input={{ id: "name", type: "text", defaultValue: answerInfo.name }} />
-            { answerInfo.answerType == "text" ?
-                <Input label={"Texto"} ref={inputRef} input={{ id: "text", type: "text", defaultValue: answerInfo.text }} />
-              :
-                <ImageInput label="Imagem do Fluxograma" onImageInputChange={handleImageChange} input={{ id: "flowchart" }} />
-            }
-        </form>
-        <button onClick={performAction}>{actionMap.title}</button>
-        <button onClick={handleClose}>Fechar</button>
-    </div>
+    return <>
+        <div className={styles.background}></div>
+        <div className={styles.modal}>
+            <h2 className={styles.title}>{actionMap.title}</h2>
+            <form className={styles.form}>
+                <Input label={"Nome"} ref={nameRef} input={{ id: "name", type: "text", defaultValue: answerInfo.name }} />
+                { answerInfo.answerType == "text" ?
+                    <Input label={"Texto"} ref={inputRef} input={{ id: "text", type: "text", defaultValue: answerInfo.text }} />
+                :
+                    <ImageInput label="Imagem" onImageInputChange={handleImageChange} input={{ id: "flowchart" }} placeholder="Clique para inserir imagem" />
+                }
+            </form>
+            <div className={styles.buttonArea}>
+                <button className="button" onClick={performAction}>{actionMap.title}</button>
+                <button className="button" onClick={handleClose}>Fechar</button>
+            </div>
+        </div>
+    </>
 }
 
 export default CreateEditTextAnswerModal;

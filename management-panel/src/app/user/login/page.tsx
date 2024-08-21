@@ -5,6 +5,8 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation'
 import React, { createRef, useState } from 'react'
 
+import styles from "../UserPage.module.css"
+
 const Login: NextPage = () => {
     const router = useRouter();
 
@@ -35,22 +37,23 @@ const Login: NextPage = () => {
     }
   
     return (
-      <main>
-        <form onSubmit={handleSubmit}>
-          <div>
-              <Input label='Email' input={{ id: "email", type: "text" }} ref={emailRef} />
-              <Input label='Senha' input={{ id: "password", type: "text" }} ref={passwordRef} />
-              <button>Login</button>
+      <>
+        <form className={styles.formBox} onSubmit={handleSubmit}>
+          <h1 className={styles.title}>Entrar</h1>
+          <div className={styles.inputFields}>
+            <Input label='Email' input={{ id: "email", type: "text" }} ref={emailRef} />
+            <Input label='Senha' input={{ id: "password", type: "password" }} ref={passwordRef} />
               {
-              error 
-              ?
+                error 
+                ?
                 <span>{error}</span>
-              :
+                :
                 <span></span>
-            }
+              }
           </div>
+          <button className='button'>Entrar</button>
         </form>
-      </main>
+      </>
     )
 }
 

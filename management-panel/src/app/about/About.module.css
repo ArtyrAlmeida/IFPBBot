@@ -1,0 +1,17 @@
+.container {
+    margin-top: 2.9em;
+    background-color: #D9D9D9;
+    padding: 4em 5.5em;
+    border-radius: 5px;
+}
+
+.container p {
+    font-size: 1.8rem;
+    color: #000000;
+    margin-bottom: 1.5em;
+    font-weight: bold;
+}
+
+.aboutWrapper {
+    padding: 0 25em;
+  }

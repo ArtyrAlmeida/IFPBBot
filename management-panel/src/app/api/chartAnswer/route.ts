@@ -10,7 +10,6 @@ const GET = async (req: NextRequest) => {
     try {
         await connectDb();
         const answers = await ChartAnswer.find({});
-        console.log(answers);
         
         return NextResponse.json(answers, { status: 200 });
     } catch (error) {

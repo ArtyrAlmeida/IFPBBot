@@ -5,6 +5,8 @@ import { NextPage } from 'next';
 import Input from '@/app/components/Input/TextInput';
 import { useRouter } from 'next/navigation';
 
+import styles from "../UserPage.module.css"
+
 const SignUp: NextPage = () => {
   const router = useRouter();
 
@@ -38,23 +40,24 @@ const SignUp: NextPage = () => {
   }
 
   return (
-    <main>
-      <form onSubmit={handleSubmit}>
-        <div>
+    <>
+      <form className={styles.formBox} onSubmit={handleSubmit}>
+        <h1 className={styles.title}>Cadastro</h1>
+        <div className={styles.inputFields}>
             <Input label='Nome' input={{ id: "name", type: "text" }} ref={nameRef} />
             <Input label='Email' input={{ id: "email", type: "text" }} ref={emailRef} />
             <Input label='Senha' input={{ id: "password", type: "password" }} ref={passwordRef} />
-            <button>Cadastrar</button>
             {
               error 
               ?
-                <span>{error}</span>
+              <span>{error}</span>
               :
-                <span></span>
+              <span></span>
             }
         </div>
+        <button className='button'>Registrar</button>
       </form>
-    </main>
+    </>
   )
 }
 

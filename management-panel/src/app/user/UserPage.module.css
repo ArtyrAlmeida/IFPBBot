@@ -1,0 +1,19 @@
+.title {
+    color: #397367;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.formBox {
+    background-color: #D9D9D9;
+    padding: 2em 6em;
+    text-align: center;
+    margin-top: 2em;
+}
+
+.inputFields {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    margin-top: 2em;
+}
